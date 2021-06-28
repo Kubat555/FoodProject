@@ -104,7 +104,7 @@ window.addEventListener('DOMContentLoaded', () => {
     function openModal(){
     modal.style.display = 'block';
     document.body.style.overflow = 'hidden';
-    clearInterval(openModalAfterTime);
+    // clearInterval(openModalAfterTime);
     }
 
     function closeModal(){
@@ -200,4 +200,42 @@ window.addEventListener('DOMContentLoaded', () => {
         13,
         '.menu .container'
     ).createCard();
+
+    
+    // TODO form
+
+    const forms = document.querySelectorAll('form');
+    
+    forms.forEach(item => {
+        sendData(item);
+    });
+
+    function sendData(form){
+        const massage = {
+            loading: 'Загрузка',
+            success: 'Успешно отправлено',
+            fail: 'Ошибка при отправке данных'
+        };
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const request = new XMLHttpRequest();
+            request.open('POST', 'server.php');
+
+            const formData = new FormData(form);
+            request.send(formData);
+
+            request.addEventListener('load', ()=>{
+                if(request.status === 200){
+                    alert(massage.success);
+                    form.reset();
+                    console.log(request.response);
+                }
+                else{
+                    alert(massage.fail);
+                }
+            });
+        });
+    }
 });
