@@ -1,0 +1,22 @@
+{
+  "name": "food.kg",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kubat555/FoodProject.git"
+  },
+  "author": "kubat",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kubat555/FoodProject/issues"
+  },
+  "homepage": "https://github.com/Kubat555/FoodProject#readme",
+  "devDependencies": {
+    "json-server": "^0.16.3"
+  }
+}

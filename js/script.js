@@ -174,32 +174,23 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    new CardModel(
-        "img/tabs/vegy.jpg",
-        "vegy",
-        'Меню "Фитнес"',
-        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
-        8,
-        '.menu .container'
-    ).createCard();
+    const getDataCard = async(url) => {
+        const res =  await fetch(url);
 
-    new CardModel(
-        "img/tabs/elite.jpg",
-        "elite",
-        'Меню “Премиум”',
-        'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
-        16,
-        '.menu .container'
-    ).createCard();
+        if(!res.ok){
+            new Error(`Error status ${res.status}`);
+        }
 
-    new CardModel(
-        "img/tabs/post.jpg",
-        "post",
-        'Меню "Постное"',
-        'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
-        13,
-        '.menu .container'
-    ).createCard();
+        return await res.json();
+    };
+
+    getDataCard("http://localhost:3000/menu")
+        .then(data => {
+            data.forEach(({img, alt, title, descr, price}) => {
+                new CardModel(img, alt, title, descr, price, ".menu .container").createCard();
+            });
+        });
+
 
     
     // TODO form
@@ -210,32 +201,41 @@ window.addEventListener('DOMContentLoaded', () => {
         sendData(item);
     });
 
+    const postData = async (url, data) => {
+        const res = await fetch(url, {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json' 
+            },
+            body: data
+        });
+
+        return await res.json();
+    };
+
     function sendData(form){
         const massage = {
-            loading: 'Загрузка',
-            success: 'Успешно отправлено',
-            fail: 'Ошибка при отправке данных'
+            loading: "Загрузка",
+            success: "Успешно отправлено",
+            fail: "Ошибка при отправке данных"
         };
 
-        form.addEventListener('submit', (e) => {
+        form.addEventListener("submit", (e) => {
             e.preventDefault();
 
-            const request = new XMLHttpRequest();
-            request.open('POST', 'server.php');
-
             const formData = new FormData(form);
-            request.send(formData);
+            
+            const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
-            request.addEventListener('load', ()=>{
-                if(request.status === 200){
-                    alert(massage.success);
+            postData('http://localhost:3000/requests', json)
+                .then(data => {
+                    console.log(massage.success);
                     form.reset();
-                    console.log(request.response);
-                }
-                else{
-                    alert(massage.fail);
-                }
-            });
+                    console.log(data)
+                })
+                .catch(() => console.log(massage.fail));
         });
     }
+
+    
 });
