@@ -24,6 +24,11 @@ function calc() {
     calcBtn.forEach(item => {
     if(item.classList.contains("input_person_data")){
         item.addEventListener("input", () => {
+            if(isNaN(+item.value)){
+                item.style.border = "2px solid red";
+            }else{
+                item.style.border = "none";
+            }
             if(item.id == "height"){
                 height = item.value;
             }

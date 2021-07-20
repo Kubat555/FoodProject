@@ -1,16 +1,24 @@
 function timer() {
     //TODO таймер 
 
-    let deadline = '2021-07-20';
+    let deadline = '2022-07-20';
 
     function getTimeValue(endtime){
         const t = Date.parse(endtime) - Date.parse( new Date());
-
-        let days = Math.floor(t / (1000 * 60 * 60 * 24)),
-            hours = Math.floor((t / (1000 * 60 * 60))%24),
-            minutes = Math.floor(t / (1000 * 60) %60),
+        let days, hours, minutes, seconds;
+        if(t <= 0){
+            days = 0;
+            hours = 0;
+            minutes = 0;
+            seconds = 0;
+        }
+        else{
+            days = Math.floor(t / (1000 * 60 * 60 * 24));
+            hours = Math.floor((t / (1000 * 60 * 60))%24);
+            minutes = Math.floor(t / (1000 * 60) %60);
             seconds = Math.floor((t / 1000) % 60);
-
+        }
+        
         return {
             'total': t,
             'days' : days,
@@ -28,6 +36,8 @@ function timer() {
             return num;
         }
     }
+
+    let startTimer = setInterval(getClock, 1000);
 
     function getClock(){
         let t = getTimeValue(deadline);
@@ -47,7 +57,7 @@ function timer() {
         }
     }
     getClock();
-    let startTimer = setInterval(getClock, 1000);
+    
 }
 
 module.exports = timer;
