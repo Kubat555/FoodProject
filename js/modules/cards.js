@@ -43,9 +43,15 @@ function cards () {
         return await res.json();
     };
 
-    getDataCard("http://localhost:3000/menu")
+    // getDataCard("http://localhost:3000/menu")
+    //     .then(data => {
+    //         data.forEach(({img, alt, title, descr, price}) => {
+    //             new CardModel(img, alt, title, descr, price, ".menu .container").createCard();
+    //         });
+    //     });
+    getDataCard("../db.json")
         .then(data => {
-            data.forEach(({img, alt, title, descr, price}) => {
+            data.menu.forEach(({img, alt, title, descr, price}) => {
                 new CardModel(img, alt, title, descr, price, ".menu .container").createCard();
             });
         });
